@@ -1,0 +1,76 @@
+---
+title: 节点介绍
+---
+
+<Callout type='error'>
+身处中国大陆的用户应该避免直接连接 Edge/5G 节点
+</Callout>
+
+<Callout type='success'>
+可通过 [可选项参数](../advanced/ding-yue-di-zhi-tuo-guan-di-zhi/untitled) 筛选出适合当前网络环境的节点
+</Callout>
+
+
+| 节点级别         | 传输性质    | 特点或接入点                                      | 链路                                                      |
+| ------------ | ------- | ------------------------------------------- | ------------------------------------------------------- |
+| Edge         | 公网      | -                                           | Gloabl network                                          |
+| 5G           | 公网      | AWS Wavelength                              | Gloabl network                                          |
+| GIA          | 公网      | 高优先级路由                                      | <ul><li>CN2 GIA </li><li>AS9929</li><li>CMIN2</li></ul> |
+| OCTO         | 公网 + 内网 | QUIC transmission                           | Octopus network                                         |
+| IEPL (Air)   | 内网      | BGP                                         | IEPL                                                    |
+| IEPL (Std)   | 内网      | BGP                                         | IEPL                                                    |
+| IEPL (Pro)   | 内网      | BGP                                         | IEPL                                                    |
+| IEPL (Ultra) | 内网      | China Telecom + China Unicom + China Mobile | IEPL                                                    |
+| AC / BGP     | 内网      | ADN / BGP                                   | IEPL                                                    |
+| HA           | 内网      | BGP                                         | IEPL                                                    |
+| Gamer        | 内网      | BGP                                         | IEPL                                                    |
+
+## IEPL (内网专线)
+
+国际以太网专线节点，以太网接口的增强型的 IPLC 产品，是一个端到端的真正的以太网电路，纯以太网电路将提供比 IPLC 更少的抖动和更高的性能。
+
+## AC/HA (内网专线)
+
+私网通信通道，实现自动路由分发及学习，提高网络的快速收敛和跨网络通信的质量和安全性，实现全网资源的互通，是具有企业级规模和通信能力的互连网络。
+
+* 使用 BGP 协议同时接入多个运营商，可以根据设定的寻路协议实时自动优化网络结构，保持客户使用的网络持续稳定，高效。
+* 多线接入的 BGP，能够感知接入线路及运营商内部网络状况，运营商内部故障时，能够快速切换到其他运营商接入链路，保证用户能够正常访问。
+
+## Gamer (游戏节点)
+
+SS / SSR / SS2022 / Vmess / Trojan 并非为游戏设计的，其设计结构和很多代码实现都并不能提供足够优秀的游戏性能，我们无法提供 Gamer 节点的 SLA 保证，建议有游戏加速需求的用户使用专业的游戏加速器。
+
+
+## Edge (国际标准边缘网络)
+
+世界各地的运营商或商家提供的云服务，提供 300Mbps 到 10Gbps 不等的国际网络容量。
+
+<Callout type='error' title='不推荐'>
+- 无法提供 SLA
+- 无法对身处中国大陆的用户保证速率
+- 无法对身处中国大陆的用户保证链通性
+
+可以通过[节点中继](https://dlercloud.com/user/relay)或[流量转发](https://dlercloud.com/user/cusrelay)改善链路性能
+</Callout>
+
+## 5G (AWS Wavelength 5G 边缘网络)
+
+AWS EC2  内网直达当地网络运营商5G 网络基站，从而使用最接近"原生"的IP。
+
+<Callout type='error' title='不推荐'>
+- 无法对身处中国大陆的用户保证速率
+- 无法对身处中国大陆的用户保证链通性
+
+可以通过[节点中继](https://dlercloud.com/user/relay)或[流量转发](https://dlercloud.com/user/cusrelay)改善链路性能
+</Callout>
+
+## GIA (大陆优化线路)
+
+由骨干网络和精品业务网络组成，是中国大陆最顶级的承载网络
+
+<Callout type='warning' title='不推荐'>
+- 无法提供无限量的数据传输
+- 无法对身处中国大陆的用户保证链通性
+
+在某些特定的时期，无法对身处中国大陆的用户保证链通性，但我们会尽量尽快解决
+</Callout>

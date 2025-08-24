@@ -1,0 +1,64 @@
+---
+title: 协议 / 端口
+---
+
+<Callout type='success' title='建议'>
+建议所有用户使用 Smart 订阅/托管
+</Callout>
+
+## 协议兼容性
+
+<Callout type='info' title='兼容性'>
+某些路由固件（如: Merlin）可能无法导入和使用仅支持 Shadowsocks 协议的节点
+</Callout>
+
+<table data-full-width="🟢"><thead><tr><th>-</th><th width="118" data-type="checkbox">Shadowsocks</th><th width="155" data-type="checkbox">Shadowsocks 2022</th><th data-type="checkbox">Shadowsocks(r)</th><th width="104" data-type="checkbox">Trojan</th><th data-type="checkbox">Vmess</th></tr></thead><tbody><tr><td>Edge</td><td>🟢</td><td>🟢</td><td>🔴</td><td>🟢</td><td>🟢</td></tr><tr><td>5G</td><td>🟢</td><td>🟢</td><td>🔴</td><td>🟢</td><td>🟢</td></tr><tr><td>GIA</td><td>🟢</td><td>🟢</td><td>🔴</td><td>🟢</td><td>🟢</td></tr><tr><td>OCTO</td><td>🟢</td><td>🟢</td><td>🔴</td><td>🟢</td><td>🟢</td></tr><tr><td>IEPL (Air)</td><td>🟢</td><td>🟢</td><td>🔴</td><td>🟢</td><td>🔴</td></tr><tr><td>IEPL (Std)</td><td>🟢</td><td>🟢</td><td>🟢</td><td>🟢</td><td>🟢</td></tr><tr><td>IEPL (Pro)</td><td>🟢</td><td>🟢</td><td>🟢</td><td>🟢</td><td>🟢</td></tr><tr><td>AC</td><td>🟢</td><td>🟢</td><td>🟢</td><td>🟢</td><td>🟢</td></tr><tr><td>HA</td><td>🟢</td><td>🟢</td><td>🟢</td><td>🟢</td><td>🟢</td></tr></tbody></table>
+
+## 端口兼容性
+
+<table data-full-width="🟢"><thead><tr><th>-</th><th data-type="checkbox">公共端口</th><th data-type="checkbox">个人端口</th></tr></thead><tbody><tr><td>Shadowsocks</td><td>🟢</td><td>🔴</td></tr><tr><td>Shadowsocks 2022</td><td>🟢</td><td>🔴</td></tr><tr><td>Shadowsocks(r)</td><td>🔴</td><td>🟢</td></tr><tr><td>Trojan</td><td>🟢</td><td>🔴</td></tr><tr><td>Vmess</td><td>🟢</td><td>🔴</td></tr></tbody></table>
+
+
+
+<Callout type='info' title='Shadowsocks 2022 和 Shadowsocks 应被视为两个独立的协议'>
+虽然 Shadowsocks 2022 是在原始 Shadowsocks 协议的基础上进行的改进，但由于其在加密方式、协议结构和安全特性等方面进行了重大修改，导致两者在兼容性和实现上存在显著差异
+</Callout>
+
+## 公共端口
+
+### 概述
+
+公共端口与个人端口不同之处是允许多个用户使用同一个端口，而不是使用为每个用户单独分配的端口。
+
+### 优势
+
+1. 配合隧道加密程序可以有效规避网络审查和封锁
+2. 某些组织或企业的内部网络可能有行为管理，并配置了端口限制。这时使用一般的配置就无法连接，使用公共端口则可以正常连接
+3. 某些运营商可能对非常用端口，特别是高位端口进行限速（因为高位端口多数被用于 BitTorrent）。使用常见端口可能对某些 ISP 的 QoS 有正面效果
+
+<Callout type='error' title='Shadowsocks 协议劣势'>
+1. 可能无法获得最佳性能
+2. ~~此模式可能容易出现 TCP 连接异常中断问题~~
+3. 无法使用 UDP 转发
+4. 可能存在安全隐患
+5. 有限的客户端支持
+</Callout>
+
+## &#x20;Shadowsocks 2022
+
+* 采用现代化的 AEAD（Authenticated Encryption with Associated Data）加密方法
+* 引入了完整的重放保护机制
+* 解决了旧版本中的安全漏洞，确保通信内容的完整性和保密性
+* 采用了更高效的加密方法，在提供强大安全性的同时，也提高了加解密效率
+* 对 UDP 转发进行了全面改进，引入了独立的会话 ID 和数据包 ID，确保了通信的完整性和安全性
+
+<Callout type='success' title='在仅支持公共端口节点时应使用 Shadowsocks 2022 协议'>
+* Shadowsocks 2022 比 Shadowsocks 更为先进、安全
+* Shadowsocks 2022 可以在所有客户端使用 UDP 转发
+</Callout>
+
+## Trojan
+
+* 利用传输层安全协议（TLS）对流量进行加密，使其在网络中表现为普通的 HTTPS 流量，从而有效规避深度包检测（DPI）和网络审查
+* 设计简洁高效
+* 支持 UDP over TCP（UoT），提升了在某些应用场景下的性能和稳定性

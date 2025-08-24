@@ -1,3 +1,5 @@
 # my-fuma
 
-## log my reading
+## Level Up
+
+- 12 create a dopamine reward system
