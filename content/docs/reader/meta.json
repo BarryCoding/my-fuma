@@ -1,0 +1,5 @@
+{
+  "title": "As a Reader",
+  "root": true,
+  "pages": ["---Guides---", "index", "test"]
+}

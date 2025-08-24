@@ -1,0 +1,5 @@
+{
+  "title": "Fumadocs",
+  "root": true,
+  "pages": ["---Guides---", "index", "test"]
+}
