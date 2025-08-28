@@ -1,0 +1,501 @@
+---
+title: Data Type
+---
+
+## Introduction
+
+Container sequences
+
+- hold other types of Data
+- used for aggregation, sorting, and more
+- can be mutable(list, set) or immutable(tuple)
+- iterable
+
+## List
+
+- hold data in order
+- mutable
+- indexable
+
+```py title="accessing items in list"
+colors = ['red', 'green', 'blue']
+colors.append('yellow')
+
+print(colors[0]) # red
+print(colors[-1]) # yellow
+print(colors[0:2]) # ['red', 'green']
+print(colors[1:]) # ['green', 'blue', 'yellow']
+print(colors[:2]) # ['red', 'green']
+```
+
+```py title="combining lists"
+colors = ['red', 'green', 'blue']
+colors2 = ['yellow', 'purple']
+
+all_colors = colors + colors2
+# ['red', 'green', 'blue', 'yellow', 'purple']
+
+colors.append(colors2)
+# ['red', 'green', 'blue', 'yellow', 'purple', ['yellow', 'purple']]
+```
+
+```py title="finding items in list"
+colors = ['red', 'green', 'blue', 'yellow', 'purple']
+
+print('red' in colors) # True
+print('orange' in colors) # False
+
+print(colors.index('blue')) # 2
+```
+
+```py title="removing items from list"
+colors = ['red', 'green', 'blue', 'yellow', 'purple']
+
+colors.remove('yellow')
+# ['red', 'green', 'blue', 'purple']
+
+green_index = colors.index('green')
+colors.pop(green_index)
+# ['red', 'blue', 'purple']
+
+colors.clear()
+# []
+```
+
+```py title="iterating over list"
+colors = ['red', 'green', 'blue', 'yellow', 'purple']
+
+title_case_colors = [color.title() for color in colors]
+# ['Red', 'Green', 'Blue', 'Yellow', 'Purple']
+```
+
+```py title="sorting list"
+colors = ['red', 'green', 'blue', 'yellow', 'purple']
+
+sorted_colors = sorted(colors)
+# ['blue', 'green', 'purple', 'red', 'yellow']
+```
+
+## Tuple
+
+- hold data in order
+- immutable
+- indexable
+- pairing
+- unpacking
+
+```py title="zipping tuples"
+colors = ('red', 'green', 'blue')
+sizes = ('S', 'M', 'L')
+
+zipped = zip(colors, sizes)
+# [('red', 'S'), ('green', 'M'), ('blue', 'L')]
+```
+
+```py title="unpacking tuples"
+color, size = zipped[0]
+# color = 'red'
+# size = 'S'
+```
+
+```py title="unpacking in loop"
+for color, size in zipped:
+  print(color, size)
+# red S
+# green M
+# blue L
+```
+
+```py title="enumerating positions"
+for index, item in enumerate(zipped):
+  color, size = item
+  print(index, color, size)
+# 0 red S
+# 1 green M
+# 2 blue L
+```
+
+```py title="be careful"
+with_commas = 'red',
+# ('red',)
+```
+
+## Strings
+
+```py title="format string literals"
+name = 'John'
+age = 30
+
+print(f'{name} is {age} years old')
+# John is 30 years old
+```
+
+```py title="joining strings"
+colors = ['red', 'green', 'blue']
+
+print(', '.join(colors))
+# red, green, blue
+```
+
+```py title="matching strings"
+colors = 'red green blue'
+
+print(colors.startswith('red')) # True
+print(colors.endswith('blue')) # True
+
+# case sensitive
+print(colors.startswith('Red')) # False
+```
+
+```py title="in operator"
+colors = 'red green blue'
+
+print('red' in colors) # True
+print('orange' in colors) # False
+
+# case sensitive
+print('Red' in colors) # False
+
+# case insensitive approach
+print('Red'.lower() in colors.lower()) # True
+```
+
+## Dictionary
+
+- hold data in key-value pairs
+- nestable
+- iterable
+- created by `dict()` or `{}`
+
+```py title="finding items in dictionary"
+colors = {'red': 1, 'green': 2, 'blue': 3}
+
+# unsafe way to get items
+print(colors['red']) # 1
+print(colors['orange']) # KeyError
+
+# safe way to get items
+print(colors.get('red')) # 1
+print(colors.get('orange')) # None
+print(colors.get('orange', 'not found')) # not found
+```
+
+### altering dictionary
+
+```py title="adding items"
+colors = {'red': 1, 'green': 2, 'blue': 3}
+
+colors['yellow'] = 4
+```
+
+```py title="updating items"
+colors = {'red': 1, 'green': 2, 'blue': 3}
+
+colors['red'] = 4
+
+colors.update({
+  'red': 5,
+  'yellow': 6
+})
+
+colors.update(yellow=7, purple=8)
+```
+
+```py title="removing items"
+colors = {'red': 1, 'green': 2, 'blue': 3}
+
+# unsafe way to remove items
+del colors['red']
+
+# safe way to remove items
+colors.pop('green')
+```
+
+### Dictionary Python way
+
+```py title="items"
+colors = {'red': 1, 'green': 2, 'blue': 3}
+
+for color, value in colors.items():
+  print(color, value)
+# red 1
+# green 2
+# blue 3
+```
+
+```py title="in operator"
+print('red' in colors) # True
+print('orange' in colors) # False
+```
+
+```py title="nested dictionary"
+colors = {
+  'red': {
+    'hex': '#ff0000',
+    'rgb': (255, 0, 0)
+  },
+  'green': {
+    'hex': '#00ff00',
+    'rgb': (0, 255, 0)
+  },
+  'blue': {
+    'hex': '#0000ff',
+    'rgb': (0, 0, 255)
+  }
+}
+
+colors['red']['hex']
+# #ff0000
+
+colors.get('red').get('hex')
+# #ff0000
+
+colors.get('red').get('rgba', 'not found')
+# not found
+```
+
+## Numeric
+
+| Integer       | Float               | Decimal             |
+| ------------- | ------------------- | ------------------- |
+| whole numbers | fractional numbers  | exact precision     |
+| large values  | scientific notation | currency operations |
+
+```py title="printing float"
+print(0.00001)
+# 1e-05
+
+print(f"{0.00001:f}")
+# 0.000010
+
+print(f"{0.0000001:f}")
+# 0.000000
+
+print(f"{0.0000001:.7f}")
+# 0.0000001
+```
+
+```py title="approximate float comparison"
+print(0.1 + 0.2 == 0.3) # False
+```
+
+```py title="division types"
+4/2 # 2.0
+4//2 # 2
+7//3 # 2
+```
+
+## Boolean
+
+- True or False
+
+| Truthy | Falsy |
+| ------ | ----- |
+| 1      | 0     |
+| "Cookie"     | ""    |
+| `[1, 2, 3]` | `[]`    |
+| `(1, 2, 3)` | `()`    |
+| `{1, 2, 3}` | `{}`    |
+|        | None |
+
+```py title="boolean operators"
+print(True and False) # False
+print(True or False) # True
+print(not True) # False
+```
+
+## Set
+
+- Unique values
+- Unordered
+- mutable
+- Created by `set()` or `{}`
+
+```py title="creating set"
+colors1 = {'red', 'green', 'blue'}
+
+colors2 = set(['red', 'green', 'blue'])
+```
+
+```py title="adding items"
+colors = {'red', 'green', 'blue'}
+
+colors.add('yellow')
+# {'red', 'green', 'blue', 'yellow'}
+```
+
+```py title="updating set"
+colors = {'red', 'green', 'blue'}
+
+colors.update(['yellow', 'purple'])
+# {'red', 'green', 'blue', 'yellow', 'purple'}
+```
+
+```py title="removing items"
+colors = {'red', 'green', 'blue'}
+
+colors.pop()
+# 'red'
+
+colors.discard('green')
+# {'blue'}
+```
+
+```py title="union and intersection"
+colors1 = {'red', 'green', 'blue'}
+colors2 = {'red', 'green', 'yellow'}
+
+colors1.union(colors2)
+# {'red', 'green', 'blue', 'yellow'}
+
+colors1.intersection(colors2)
+# {'red', 'green'}
+```
+
+```py title="difference"
+colors1 = {'red', 'green', 'blue'}
+colors2 = {'red', 'green', 'yellow'}
+
+colors1.difference(colors2)
+# {'blue'} not in colors2
+
+colors2.difference(colors1)
+# {'yellow'} not in colors1
+```
+
+## Advanced Data Types
+
+### Counter
+
+special dictionary used for counting hashable objects
+
+```py title="creating counter"
+from collections import Counter
+
+list = ['red', 'green', 'blue', 'red', 'blue', 'red']
+
+counter = Counter(list)
+# Counter({'red': 3, 'blue': 2, 'green': 1})
+
+counter.most_common(2)
+# [('red', 3), ('blue', 2)]
+```
+
+### defaultdict
+
+- special dictionary that provides a default value for missing keys
+- created by `defaultdict(default_factory)`
+
+```py title="using defaultdict"
+from collections import defaultdict
+
+dict_int = defaultdict(int)
+
+for i in range(5):
+  dict_int[i] = i
+
+print(dict_int)
+# defaultdict(int, {0: 0, 1: 1, 2: 2, 3: 3, 4: 4})
+
+dict_list = defaultdict(list)
+
+for i in range(5):
+  dict_list[i].append(i)
+
+print(dict_list)
+# defaultdict(list, {0: [0], 1: [1], 2: [2], 3: [3], 4: [4]})
+```
+
+### namedtuple
+
+- tuple with named fields
+- created by `namedtuple(typename, field_names)`
+
+```py title="using namedtuple"
+from collections import namedtuple
+
+Person = namedtuple('Person', ['name', 'age'])
+
+dict_people = {
+  'John': {
+    'name': 'John',
+    'age': 30
+  },
+  'Jane': {
+    'name': 'Jane',
+    'age': 25
+  }
+}
+
+list_people = []
+
+for person in dict_people.items():
+  name, info = person
+  list_people.append(Person(name, info))
+
+print(list_people)
+# [Person(name='John', age=30), Person(name='Jane', age=25)]
+```
+
+### Dataclasses
+
+- class with default values for fields
+- custom representation of objects
+- easy tuple or dict conversion
+- custom properties
+- frozen instance
+
+```py title="using dataclass"
+from dataclasses import dataclass
+
+@dataclass
+class Person:
+  name: str
+  age: int
+
+person = Person('John', 30)
+print(person.name, person.age)
+# John 30
+```
+
+```py title="conversion"
+from dataclasses import asdict, astuple
+
+person = Person('John', 30)
+
+print(asdict(person))
+# {'name': 'John', 'age': 30}
+print(astuple(person))
+# ('John', 30)
+```
+
+```py title="custom properties"
+from decimal import Decimal
+
+@dataclass
+class Person:
+  name: str
+  working_years: int
+  total_balance: Decimal
+
+  @property
+  def average_balance(self):
+    return self.total_balance / self.working_years
+
+person = Person('John', 3, Decimal('300000'))
+print(person.name, person.average_balance)
+# John 100000.0
+```
+
+```py title="frozen instance"
+from dataclasses import frozen
+
+@frozen
+class Person:
+  name: str
+  age: int
+
+person = Person('John', 30)
+person.age = 31
+# dataclasses.FrozenInstanceError: cannot assign to field 'age'
+```

@@ -1,0 +1,12 @@
+{
+  "title": "Temporary",
+  "root": true,
+  "pages": [
+    "---Temp---",
+    "index",
+    "intermediate",
+    "toolbox",
+    "data-type",
+    "date-time"
+  ]
+}

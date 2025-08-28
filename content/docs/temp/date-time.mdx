@@ -1,0 +1,262 @@
+---
+title: Date and Time
+---
+
+## Date
+
+```py title="creating date"
+from datetime import date
+
+two_world_wars_start_dates = [date(1939, 9, 1), date(1941, 6, 22)]
+
+for date in two_world_wars_start_dates:
+  print(date.year, date.month, date.day, date.weekday())
+  # 1939 9 1 0 (Monday)
+  # 1941 6 22 6 (Sunday)
+```
+
+```py title="math with date"
+from datetime import date, timedelta
+
+world_war_1_start_date = date(1939, 9, 1)
+world_war_2_start_date = date(1941, 6, 22)
+
+list_dates = [world_war_1_start_date, world_war_2_start_date]
+
+print(min(list_dates))
+# 1939-09-01
+print(max(list_dates))
+# 1941-06-22
+
+diff_days = world_war_2_start_date - world_war_1_start_date
+print(diff_days.days)
+# 695
+
+100_days = timedelta(days=100)
+
+print(world_war_2_start_date + 100_days)
+# 1941-10-01
+```
+
+```py title="date to string format"
+from datetime import date
+
+date_today = date.today()
+print(date_today.isoformat())
+# 2025-08-28
+
+print(date_today.strftime("Year is %Y"))
+# Year is 2025
+
+print(date_today.strftime("Month is %m"))
+# Month is 08
+
+print(date_today.strftime("Day is %d"))
+# Day is 28
+
+# format YYYY/MM/DD
+print(date_today.strftime("%Y/%m/%d"))
+# 2025/08/28
+```
+
+
+## DateTime
+
+```py title="creating datetime"
+from datetime import datetime
+
+dt = datetime(2025, 8, 28, 15, 30, 30, 100000)
+# 2025-08-28 15:30:30.100000
+
+dt_details = datetime(year=2025, month=8, day=28, hour=15, minute=30, second=30, microsecond=100000)
+
+dt_hr = dt.replace(minute=0, second=0, microsecond=0)
+# 2025-08-28 15:00:00
+
+dt_hr_min = dt.replace(second=0, microsecond=0)
+print(dt_hr_min)
+# 2025-08-28 15:30:00
+```
+
+```py title="print"
+from datetime import datetime
+
+dt = datetime(2025, 8, 28, 15, 30, 30, 100000)
+
+print(dt.isoformat())
+# 2025-08-28T15:30:30.100000
+
+
+print(dt.strftime("%Y-%m-%d %H:%M:%S"))
+# 2025-08-28 15:30:30
+
+print(dt.strftime("%H:%M:%S on %Y/%m/%d"))
+# 15:30:30 on 2025/08/28
+```
+
+```py title="parse"
+from datetime import datetime
+
+dt = datetime.strptime("2025-08-28 15:30:30.100000", "%Y-%m-%d %H:%M:%S.%f")
+# 2025-08-28 15:30:30.100000
+
+dt = datetime.strptime("2025-08-28 15:30:30", "%Y-%m-%d %H:%M:%S")
+# 2025-08-28 15:30:30
+
+dt = datetime.strptime("2025-08-28 15:30:30", "%Y-%m-%d")
+# ValueError: unconverted data remains: 15:30:30
+
+timestamp = 1724857830
+dt = datetime.fromtimestamp(timestamp)
+# 2025-08-28 15:30:30
+```
+
+```py title="duration1"
+from datetime import datetime
+
+travel_start = datetime(2025, 8, 28, 15, 30, 30)
+travel_end = datetime(2025, 9, 1, 10, 0, 0)
+
+duration = travel_end - travel_start
+print(duration.total_seconds())
+# 205800.0
+```
+
+```py title="duration2"
+from datetime import datetime, timedelta
+
+one_day = timedelta(days=1)
+tomorrow_datetime = datetime.now() + one_day
+yesterday_datetime = datetime.now() - one_day
+
+one_week = timedelta(weeks=1)
+next_week_datetime = datetime.now() + one_week
+```
+
+## Timezone
+
+```py title="UTC"
+from datetime import datetime, timedelta, timezone
+
+# US Eastern Standard Timezone
+us_eastern_tz = timezone(timedelta(hours=-5))
+
+# US Eastern Standard Time
+us_eastern_time = datetime(2025, 8, 28, 15, 30, 30, tzinfo=us_eastern_tz)
+# 2025-08-28 15:30:30-05:00
+
+# India Standard Timezone
+india_tz = timezone(timedelta(hours=5, minutes=30))
+
+# India Standard Time
+india_time = us_eastern_time.astimezone(india_tz)
+print(india_time)
+# 2025-08-29 01:00:30+05:30
+```
+
+```py title="tzinfo"
+from datetime import datetime, timedelta, timezone
+
+# US Eastern Standard Timezone
+us_eastern_tz = timezone(timedelta(hours=-5))
+
+# US Eastern Standard Time
+us_eastern_time = datetime(2025, 8, 28, 15, 30, 30, tzinfo=us_eastern_tz)
+# 2025-08-28 15:30:30-05:00
+
+us_eastern_time.replace(tzinfo=timezone.utc)
+# 2025-08-28 15:30:30+00:00
+
+us_eastern_time.astimezone(timezone.utc)
+# 2025-08-28 20:30:30+00:00
+```
+
+```py title="tz"
+from datetime import datetime
+from dateutil import tz
+
+# Eastern time
+eastern_tz = tz.gettz('America/New_York') # Continent/City
+
+last_travel = datetime(2025, 8, 28, 15, 30, 30, tzinfo=eastern_tz)
+# 2025-08-28 15:30:30-04:00
+```
+
+```py title="daylight saving"
+from datetime import datetime, timedelta, timezone
+
+2am = datetime(2025, 3, 9, 2, 0, 0)
+# 2025-03-09 02:00:00
+3am = datetime(2025, 3, 9, 3, 0, 0)
+# 2025-03-09 03:00:00
+
+# US Eastern Standard Timezone
+EST = timezone(timedelta(hours=-5))
+
+# Eastern Daylight Time
+EDT = timezone(timedelta(hours=-4))
+
+(2am.replace(tzinfo=EST) - 3am.replace(tzinfo=EDT)).seconds
+# 0
+```
+
+Confused!!!
+
+## Pandas
+
+```py title="simple example"
+import pandas as pd
+
+rides = pd.read_csv('rides.csv')
+
+rides.head(3)
+rides['started_at']
+rides.iloc[2]
+```
+
+```py title="parse_dates"
+import pandas as pd
+
+rides = pd.read_csv('rides.csv', parse_dates=['started_at', 'ended_at'])
+
+# same as
+rides['started_at'] = pd.to_datetime(rides['started_at'], format='%Y-%m-%d %H:%M:%S')
+rides['ended_at'] = pd.to_datetime(rides['ended_at'], format='%Y-%m-%d %H:%M:%S')
+
+# select started_at for row 2
+rides['started_at'].iloc[2]
+
+# create a duration column
+rides['duration'] = rides['ended_at'] - rides['started_at']
+
+rides['duration'].dt.total_seconds().head(3)
+# 0    60.0
+# 1    60.0
+# 2    60.0
+# Name: duration, dtype: float64
+```
+
+```py title="summarize"
+import pandas as pd
+
+rides = pd.read_csv('rides.csv', parse_dates=['started_at', 'ended_at'])
+rides['duration'] = rides['ended_at'] - rides['started_at']
+
+# average duration
+rides['duration'].mean()
+
+# total duration
+rides['duration'].sum()
+
+# count member_type
+rides['member_type'].value_counts()
+
+# member_type percentage
+rides['member_type'].value_counts() / len(rides)
+```
+
+Confused!!!
+
+### More on Pandas
+
+Confused!!!

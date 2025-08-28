@@ -1,0 +1,222 @@
+---
+title: Toolbox
+---
+
+## Introduction to iterators
+
+Iterable
+- Examples: lists, strings, dictionaries, file connections
+- Object with an associated iter() method
+- Applying iter() to an iterable creates an iterator
+
+Iterator
+- Produces next value with next()
+
+```py title="Iterating one at a time"
+word = 'ab'
+it = iter(word)
+next(it) # 'a'
+next(it) # 'b'
+next(it) # StopIteration
+```
+
+```py title="Iterating at once"
+word = 'data'
+it = iter(word)
+print(*it) # 'd' 'a' 't' 'a'
+print(*it) # StopIteration
+```
+
+```py title="Iterating over dictionary"
+d = {'a': 1, 'b': 2, 'c': 3}
+it = iter(d)
+next(it) # ('a', 1)
+next(it) # ('b', 2)
+next(it) # ('c', 3)
+next(it) # StopIteration
+```
+
+```py title="Iterating over file"
+file = open('data.txt')
+it = iter(file)
+next(it) # 'This is the first line'
+next(it) # 'This is the second line'
+next(it) # 'This is the third line'
+next(it) # StopIteration
+```
+
+### Play with iterators
+
+```py title="enumerate"
+avengers = ['iron man', 'captain america', 'thor', 'hulk', 'black widow']
+e = enumerate(avengers)
+type(e) # <class 'enumerate'>
+
+e_list = list(e)
+# [(0, 'iron man'), (1, 'captain america'), (2, 'thor'), (3, 'hulk'), (4, 'black widow')]
+```
+
+```py title="enumerate and unpack"
+for index, value in enumerate(avengers):
+    print(index, value)
+# 0 iron man
+# 1 captain america
+# 2 thor
+# 3 hulk
+# 4 black widow
+
+for index, value in enumerate(avengers, start=10):
+    print(index, value)
+# 10 iron man
+# 11 captain america
+# 12 thor
+# 13 hulk
+# 14 black widow
+```
+
+```py title="zip"
+avengers = ['iron man', 'captain america', 'thor', 'hulk', 'black widow']
+powers = ['tech', 'strength', 'thunder', 'strength', 'tech']
+z = zip(avengers, powers)
+type(z) # <class 'zip'>
+
+z_list = list(z)
+# [('iron man', 'tech'), ('captain america', 'strength'), 
+# ('thor', 'thunder'), ('hulk', 'strength'), ('black widow', 'tech')]
+```
+
+```py title="zip and unpack"
+for avenger, power in zip(avengers, powers):
+    print(avenger, power)
+# iron man tech
+# captain america strength
+# thor thunder
+# hulk strength
+# black widow tech
+```
+
+```py title="zip with *"
+z = zip(avengers, powers)
+print(*z)
+# ('iron man', 'tech') ('captain america', 'strength')
+# ('thor', 'thunder') ('hulk', 'strength') ('black widow', 'tech')
+```
+
+### Using iterators to Load Large Files
+
+- there can be too much data to hold in memory
+- solution: load data in `chunks`
+- pandas `read_csv` has `chunksize` parameter for this
+
+```py
+import pandas as pd
+total = 0
+
+for chunk in pd.read_csv('data.csv', chunksize=1000):
+  total += sum(chunk['nums'])
+
+return total
+```
+
+## List comprehensions
+
+1. reading direction: right to left
+2. iterable
+3. iterator
+4. output expression
+
+```py title="syntax"
+output_list = [output_expression for iterator in iterable]
+```
+
+```py
+numbers = [1, 2, 3, 4, 5]
+squares = [n**2 for n in numbers]
+# [1, 4, 9, 16, 25]
+
+result = [num for num in range(11)]
+# [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+```
+
+```py title="nested"
+pair = [(x, y) for x in range(2) for y in range(10, 12)]
+# [(0, 10), (0, 11), (1, 10), (1, 11)]
+```
+
+### Advanced comprehensions
+
+```py title="conditionals on the iterator"
+output_list = [output_expression for iterator in iterable if condition]
+```
+
+```py
+result = [num ** 2 for num in range(11) if num % 2 == 0]
+# [0, 4, 16, 36, 64, 100]
+```
+
+```py title="conditionals on the output_expression"
+output_list = [output_expression if condition else output_expression2 for iterator in iterable]
+```
+
+```py
+result = [num ** 2 if num % 2 == 0 else 0 for num in range(11)]
+# [0, 0, 4, 0, 16, 0, 36, 0, 64, 0, 100]
+```
+
+```py title="dictionary comprehensions"
+output_dict = {key_expression: value_expression for iterator in iterable}
+```
+
+```py
+result = {num: -num for num in range(11)}
+# {0: 0, 1: -1, 2: -2, 3: -3, 4: -4, 5: -5, 6: -6, 7: -7, 8: -8, 9: -9, 10: -10}
+```
+
+## Introduction to generator expressions
+
+```py title="syntax"
+output_generator = (output_expression for iterator in iterable)
+```
+
+```py
+result = (num for num in range(6))
+# <generator object <genexpr> at 0x7f8110000000>
+
+print(next(result)) # 0
+print(next(result)) # 1
+print(next(result)) # 2
+print(next(result)) # 3
+print(next(result)) # 4
+print(next(result)) # 5
+print(next(result)) # StopIteration
+```
+
+```py title="conditionals on the iterator"
+output_generator = (output_expression for iterator in iterable if condition)
+```
+
+
+```py
+result = (num for num in range(6) if num % 2 == 0)
+print(list(result))
+# [0, 2, 4]
+```
+
+### generator functions
+
+1. produce generator objects
+2. generates a value with `yield` keyword
+3. yields a sequence of values
+
+```py title="sequence.py"
+def num_sequence(n):
+  """Generate values from 0 to n."""
+  for i in range(n):
+    yield i
+
+result = num_sequence(5)
+# <generator object num_sequence at 0x7f8110000000>
+
+print(list(result))
+# [0, 1, 2, 3, 4]
+```

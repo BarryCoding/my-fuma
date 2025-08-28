@@ -1,0 +1,401 @@
+---
+title: Intermediate
+---
+
+## Built-in Functions
+
+```py
+# Printing
+print("Hello, World!")
+```
+
+```py
+# Checking data types
+type(print)
+```
+
+```py
+# Looping through a range of numbers
+for i in range(1,10):
+    print(i)
+```
+
+```py
+sales = [100, 200, 300, 400, 500]
+
+# Find the largest sale
+max(sales)
+
+# Find the smallest sale
+min(sales)
+
+# The total of all sales
+sum(sales)
+
+# Rounding a number
+round(sum(sales), 2)
+
+# Counting the number of items in a list
+len(sales)
+```
+
+```py
+# Length of a string
+len("123")
+
+# Length of a dictionary
+len({"a": 1, "b": 2, "c": 3})
+
+# Length of a tuple
+len((1, 2, 3))
+
+# Length of a set
+len({1, 2, 3})
+
+# Length of a list
+len([1, 2, 3])
+```
+
+```py
+# Sort the sales list
+sorted(sales)
+
+# Sort a string
+sorted("Hello, World!")
+```
+
+```py
+# Get information about a function
+help(sorted)
+```
+
+```py
+# Get information about a function
+help(print)
+```
+
+| Function   | Description                                          |
+| ---------- | ---------------------------------------------------- |
+| `print()`  | Display an output, e.g., variable's values           |
+| `max()`    | Find the largest value in a data structure           |
+| `min()`    | Find the smallest value in a data structure          |
+| `sum()`    | Add up all elements in a data structure              |
+| `round()`  | Trim a float to a specified number of decimal places |
+| `len()`    | Count the number of elements in a data structure     |
+| `sorted()` | Sort elements in a data structure in ascending order |
+| `help()`   | Get information about a function, variable, or value |
+
+## Modules
+
+### What is a module?
+
+- Files ending with .py
+- Contain functions and attributes
+- Can contain other modules
+
+### Built-in modules
+
+- os: for interpreting and interacting with operating system
+- collections: advanced data structure types and functions
+- string: performing string operations
+- logging: to log information when testing or running software
+- subprocess: to run terminal commands
+
+### Importing a module
+
+```py
+# General Syntax
+import <module_name>
+```
+
+```py
+# Import the os module
+import os
+
+# Check the type
+type(os)
+# <class 'module'>
+
+# Get information about the os module
+help(os)
+
+# Get the current working directory
+working_directory = os.getcwd()
+
+# Change directory
+os.chdir("/home/user/Desktop")
+
+# Get the local environment variables
+os.environ
+```
+
+```py
+# Import a function from a module
+from os import chdir
+```
+
+```py
+# Import multiple functions from a module
+from os import chdir, getcwd
+```
+
+## Packages
+
+- A collection of modules
+- Packages are publicly available and free
+- First need to be downloaded from PyPI
+- Then can be imported and used like modules
+
+### Installing a package
+
+```bash
+python3 -m pip install <package_name>
+```
+
+```bash
+python3 -m pip install pandas
+```
+
+### Importing a package
+
+```py
+# Import the pandas package and use the alias pd
+import pandas as pd
+
+sales = {"user_id": ["KM37", "PR19", "YU88"], "order_value": [197.75, 208.21, 134.99]}
+
+# Convert to a pandas DataFrame
+sales_df = pd.DataFrame(sales)
+```
+
+```py
+# Reading in a CSV file in our current directory
+sales_df = pd.read_csv("sales.csv")
+```
+
+```py
+# Reading in a CSV file in our current directory
+sales_df = pd.read_csv("sales.csv")
+
+# Checking the data type
+type(sales_df)
+
+# DataFrame method to preview the first five rows
+sales_df.head()
+```
+
+### Function vs Method
+
+- Function: code to perform a task
+- Method: a function that is specific to a data type
+
+## Defining Functions
+
+- Frequency of use
+- Don't Repeat Yourself (DRY)
+
+```py
+# Create a custom function to calculate the average value
+def average(values):
+    # Calculate the average
+    average_value = sum(values) / len(values)
+
+    # Round the results
+    rounded_average =  round(average_value, 2)
+
+    # Return an output
+    return rounded_average
+
+# Use the function
+average([1, 2, 3, 4, 5])
+```
+
+### Positional Arguments
+
+Provide arguments in order, separated by commas
+
+```py
+# Round pi to 2 digits
+round(3.14159, 2)
+```
+
+### Keyword Arguments
+
+- Provide arguments by assigning values to keywords
+- Useful for interpretation and tracking arguments
+
+```py
+# Round pi to 2 digits
+round(pi=3.14159, ndigits=2)
+```
+
+### Default Arguments
+
+- Provide default values for arguments
+- If no value is provided, the default value is used
+
+```py
+def average(values, rounded=False):
+  # Round average to two decimal places if rounded is True
+  if rounded == True:
+    average_value = round(sum(values) / len(values), 2)
+  else:
+    average_value = sum(values) / len(values)
+  return average_value
+
+# Use the function
+average([1, 2, 3, 4, 5])
+average(values=[1, 2, 3, 4, 5], rounded=True)
+```
+
+### Arbitrary Positional Arguments
+
+- Arbitrary arguments allow functions to accept any number of arguments
+- Use a single asterisk (\*) before the argument name
+  - Conventional naming: \*args
+- The arguments will be passed as a tuple
+
+```py
+# Create a custom function to calculate the average value
+def average(*args):
+    return sum(args) / len(args)
+
+# Calling average with six positional arguments
+average(1, 2, 3, 4, 5, 6)
+
+# Calculating across multiple lists
+average(*[15, 29], *[4, 13], *[11, 8])
+```
+
+### Arbitrary Keyword Arguments
+
+- Arbitrary keyword arguments allow functions to accept any number of keyword arguments
+- Use a double asterisk (\*\*) before the argument name
+- Conventional naming: \*\*kwargs
+- The arguments will be passed as a dictionary
+
+```py
+# Create a custom function to calculate the average value
+def average(**kwargs):
+    return sum(kwargs.values()) / len(kwargs.values())
+
+# Calling average with six kwargs
+average(a=1, b=2, c=3, d=4, e=5, f=6)
+
+# Calling average with one kwarg
+average(**{"a": 1, "b": 2, "c": 3, "d": 4, "e": 5, "f": 6})
+
+# Calculating across multiple dictionaries
+average(**{"a": 1, "b": 2}, **{"c": 3, "d": 4}, **{"e": 5, "f": 6})
+
+# Calculating across multiple dictionaries
+average(**{"a": 1, "b": 2}, **{"c": 3, "d": 4}, **{"e": 5, "f": 6})
+```
+
+### Docstrings
+
+```py
+# Access only the docstring
+round.__doc__
+```
+
+```py
+def average(values):
+    """
+    Calculate the average value of a list of numbers
+    Args:
+        values (list): a list of numbers
+    Returns:
+        rounded_average (float): The average value of the list of numbers
+    """
+    average_value = sum(values) / len(values)
+    rounded_average =  round(average_value, 2)
+    return rounded_average
+```
+
+## Lambda Functions
+
+```py
+lambda argument(s): expression
+```
+
+```py
+# Lambda average function
+lambda x: sum(x) / len(x)
+
+# Get the average
+(lambda x: sum(x) / len(x))([1, 2, 3, 4, 5])
+```
+
+```py
+# Store lambda function as a variable
+average = lambda x: sum(x) / len(x)
+
+# Get the average
+average([1, 2, 3, 4, 5])
+```
+
+```py
+# Lambda function with two arguments
+(lambda x, y: x + y)(1, 2)
+```
+
+```py
+names = ["john", "sally", "leah"]
+
+# Apply a lambda function inside map()
+capitalize = map(lambda x: x.capitalize(), names)
+
+# Convert to a list
+list(capitalize)
+```
+
+| Scenario                | Function Type |
+| ----------------------- | ------------- |
+| Complex task            | Custom        |
+| Same task several times | Custom        |
+| Simple task             | Lambda        |
+| Performed once          | Lambda        |
+
+## Introduction to errors
+
+Code that violates one or more rules
+
+- Error = Exception
+- Cause code to terminate!
+
+```py
+# TypeError: can only concatenate str (not "int") to str
+"Hello" + 5
+```
+
+```py
+# ValueError: could not convert string to float: 'hello'
+float("hello")
+```
+
+## Error Handling
+
+```py
+def average(values):
+  try:
+    # Code that may cause an error
+    return sum(values) / len(values)
+  except:
+    # Code to run if an error occurs
+    print("Error: Invalid input")
+```
+
+```py
+def average(values):
+  # Check data type
+  if not isinstance(values, list):
+    raise ValueError("Input must be a list")
+  return sum(values) / len(values)
+```
+
+| try except                    | raise                           |
+| ----------------------------- | ------------------------------- |
+| Avoid errors being produced   | Will produce an error           |
+| Still execute subsequent code | Stop executing subsequent code |
+

@@ -1,6 +1,11 @@
 export const sidebar = {
   tabs: [
     {
+      title: 'Temp',
+      url: '/docs/temp',
+      icon: '🔥',
+    },
+    {
       title: 'Dler Cloud',
       url: '/docs/dler-cloud',
       icon: '🌐',

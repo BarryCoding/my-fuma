@@ -1,0 +1,35 @@
+---
+title: Introduction
+---
+
+## Strings Cheat Sheet
+
+| Syntax     | Purpose                             | Example                                        |
+| ---------- | ----------------------------------- | ---------------------------------------------- |
+| ''         | string variable                     | `my_string = 'Hello, World!'`                  |
+| ""         | string variable                     | `my_string = "Hello, World!"`                  |
+| """"""     | multi-line string variable          | `my_string = """Hello, World!"""`              |
+| .replace() | Replaces a string with a new string | `my_string = my_string.replace("Hello", "Hi")` |
+| .upper()   | Converts a string to uppercase      | `my_string = my_string.upper()`                |
+| .lower()   | Converts a string to lowercase      | `my_string = my_string.lower()`                |
+
+## Lists Cheat Sheet
+
+| Syntax             | Functionality                                              |
+| ------------------ | ---------------------------------------------------------- |
+| `list = [1, 2, 3]` | create a list variable                                     |
+| `list[0]`          | access the first item in the list                          |
+| `list[-1]`         | access the last item in the list                           |
+| `list[0:2]`        | access the first two items in the list                     |
+| `list[1:]`         | access all items in the list starting from the second item |
+| `list[:-1]`        | access all items in the list except the last item          |
+| `list[::2]`        | access all items in the list with a step of 2              |
+
+## Data structure summary
+
+| Data Structure | Syntax                     | Immutable | Duplicates | Ordered | Subset |
+| -------------- | -------------------------- | --------- | ---------- | ------- | ------ |
+| Tuple          | `(1, 2, 3)`                | Yes       | Yes        | Yes     | index  |
+| List           | `[1, 2, 3]`                | No        | Yes        | Yes     | index  |
+| Dictionary     | `{"a": 1, "b": 2, "c": 3}` | No        | No         | Yes     | key    |
+| Set            | `{1, 2, 3}`                | No        | No         | No      | No     |
