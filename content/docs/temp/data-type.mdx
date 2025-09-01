@@ -2,22 +2,13 @@
 title: Data Type
 ---
 
-## Introduction
-
-Container sequences
-
-- hold other types of Data
-- used for aggregation, sorting, and more
-- can be mutable(list, set) or immutable(tuple)
-- iterable
-
 ## List
 
 - hold data in order
 - mutable
 - indexable
 
-```py title="accessing items in list"
+```py title="accessing elements"
 colors = ['red', 'green', 'blue']
 colors.append('yellow')
 
@@ -35,41 +26,33 @@ colors2 = ['yellow', 'purple']
 all_colors = colors + colors2
 # ['red', 'green', 'blue', 'yellow', 'purple']
 
-colors.append(colors2)
-# ['red', 'green', 'blue', 'yellow', 'purple', ['yellow', 'purple']]
+colors.extend(colors2)
+# ['red', 'green', 'blue', 'yellow', 'purple']
 ```
 
-```py title="finding items in list"
+```py title="finding element position"
 colors = ['red', 'green', 'blue', 'yellow', 'purple']
-
-print('red' in colors) # True
-print('orange' in colors) # False
 
 print(colors.index('blue')) # 2
+print(colors.index('orange')) # ValueError: 'orange' is not in list
 ```
 
-```py title="removing items from list"
+```py title="removing element"
 colors = ['red', 'green', 'blue', 'yellow', 'purple']
-
-colors.remove('yellow')
-# ['red', 'green', 'blue', 'purple']
 
 green_index = colors.index('green')
 colors.pop(green_index)
-# ['red', 'blue', 'purple']
-
-colors.clear()
-# []
+# ['red', 'blue', 'yellow', 'purple']
 ```
 
-```py title="iterating over list"
+```py title="iterating"
 colors = ['red', 'green', 'blue', 'yellow', 'purple']
 
 title_case_colors = [color.title() for color in colors]
 # ['Red', 'Green', 'Blue', 'Yellow', 'Purple']
 ```
 
-```py title="sorting list"
+```py title="sorting"
 colors = ['red', 'green', 'blue', 'yellow', 'purple']
 
 sorted_colors = sorted(colors)
@@ -81,25 +64,16 @@ sorted_colors = sorted(colors)
 - hold data in order
 - immutable
 - indexable
-- pairing
-- unpacking
+- pairing & unpacking
 
-```py title="zipping tuples"
+```py title="zipping and unpacking"
 colors = ('red', 'green', 'blue')
 sizes = ('S', 'M', 'L')
 
-zipped = zip(colors, sizes)
+pairs = list(zip(colors, sizes))
 # [('red', 'S'), ('green', 'M'), ('blue', 'L')]
-```
 
-```py title="unpacking tuples"
-color, size = zipped[0]
-# color = 'red'
-# size = 'S'
-```
-
-```py title="unpacking in loop"
-for color, size in zipped:
+for color, size in pairs:
   print(color, size)
 # red S
 # green M
@@ -107,12 +81,9 @@ for color, size in zipped:
 ```
 
 ```py title="enumerating positions"
-for index, item in enumerate(zipped):
+for index, item in enumerate(pairs):
   color, size = item
   print(index, color, size)
-# 0 red S
-# 1 green M
-# 2 blue L
 ```
 
 ```py title="be careful"
@@ -122,11 +93,11 @@ with_commas = 'red',
 
 ## Strings
 
-```py title="format string literals"
+```py title="format string"
 name = 'John'
 age = 30
 
-print(f'{name} is {age} years old')
+print(f"{name} is {age} years old")
 # John is 30 years old
 ```
 
@@ -163,11 +134,10 @@ print('Red'.lower() in colors.lower()) # True
 ## Dictionary
 
 - hold data in key-value pairs
-- nestable
 - iterable
 - created by `dict()` or `{}`
 
-```py title="finding items in dictionary"
+```py title="finding items"
 colors = {'red': 1, 'green': 2, 'blue': 3}
 
 # unsafe way to get items
@@ -180,9 +150,7 @@ print(colors.get('orange')) # None
 print(colors.get('orange', 'not found')) # not found
 ```
 
-### altering dictionary
-
-```py title="adding items"
+```py title="extending dictionary"
 colors = {'red': 1, 'green': 2, 'blue': 3}
 
 colors['yellow'] = 4
@@ -190,8 +158,6 @@ colors['yellow'] = 4
 
 ```py title="updating items"
 colors = {'red': 1, 'green': 2, 'blue': 3}
-
-colors['red'] = 4
 
 colors.update({
   'red': 5,
@@ -211,9 +177,7 @@ del colors['red']
 colors.pop('green')
 ```
 
-### Dictionary Python way
-
-```py title="items"
+```py title="items and in operator"
 colors = {'red': 1, 'green': 2, 'blue': 3}
 
 for color, value in colors.items():
@@ -221,9 +185,7 @@ for color, value in colors.items():
 # red 1
 # green 2
 # blue 3
-```
 
-```py title="in operator"
 print('red' in colors) # True
 print('orange' in colors) # False
 ```
@@ -289,14 +251,14 @@ print(0.1 + 0.2 == 0.3) # False
 
 - True or False
 
-| Truthy | Falsy |
-| ------ | ----- |
-| 1      | 0     |
-| "Cookie"     | ""    |
-| `[1, 2, 3]` | `[]`    |
-| `(1, 2, 3)` | `()`    |
-| `{1, 2, 3}` | `{}`    |
-|        | None |
+| Truthy      | Falsy |
+| ----------- | ----- |
+| 1           | 0     |
+| "Cookie"    | ""    |
+| `[1, 2, 3]` | `[]`  |
+| `(1, 2, 3)` | `()`  |
+| `{1, 2, 3}` | `{}`  |
+|             | None  |
 
 ```py title="boolean operators"
 print(True and False) # False
@@ -314,10 +276,10 @@ print(not True) # False
 ```py title="creating set"
 colors1 = {'red', 'green', 'blue'}
 
-colors2 = set(['red', 'green', 'blue'])
+colors_set = set(['red', 'green', 'blue'])
 ```
 
-```py title="adding items"
+```py title="adding a element"
 colors = {'red', 'green', 'blue'}
 
 colors.add('yellow')
@@ -331,10 +293,10 @@ colors.update(['yellow', 'purple'])
 # {'red', 'green', 'blue', 'yellow', 'purple'}
 ```
 
-```py title="removing items"
+```py title="removing element"
 colors = {'red', 'green', 'blue'}
 
-colors.pop()
+colors.pop() 
 # 'red'
 
 colors.discard('green')
@@ -357,17 +319,17 @@ colors1 = {'red', 'green', 'blue'}
 colors2 = {'red', 'green', 'yellow'}
 
 colors1.difference(colors2)
-# {'blue'} not in colors2
+# color1 elements not in colors2
 
 colors2.difference(colors1)
-# {'yellow'} not in colors1
+# color2 elements not in colors1
 ```
 
 ## Advanced Data Types
 
 ### Counter
 
-special dictionary used for counting hashable objects
+**special dictionary** used for counting hashable objects
 
 ```py title="creating counter"
 from collections import Counter
@@ -409,7 +371,7 @@ print(dict_list)
 ### namedtuple
 
 - tuple with named fields
-- created by `namedtuple(typename, field_names)`
+- created by `namedtuple(typename, field_names_list)`
 
 ```py title="using namedtuple"
 from collections import namedtuple

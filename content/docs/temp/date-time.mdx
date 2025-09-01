@@ -28,8 +28,8 @@ print(min(list_dates))
 print(max(list_dates))
 # 1941-06-22
 
-diff_days = world_war_2_start_date - world_war_1_start_date
-print(diff_days.days)
+delta = world_war_2_start_date - world_war_1_start_date
+print(delta.days)
 # 695
 
 100_days = timedelta(days=100)
@@ -38,19 +38,18 @@ print(world_war_2_start_date + 100_days)
 # 1941-10-01
 ```
 
-```py title="date to string format"
+```py title="string format"
 from datetime import date
 
 date_today = date.today()
-print(date_today.isoformat())
+
+print(date_today.isoformat()) # ISO 8601 format
 # 2025-08-28
 
 print(date_today.strftime("Year is %Y"))
 # Year is 2025
-
 print(date_today.strftime("Month is %m"))
 # Month is 08
-
 print(date_today.strftime("Day is %d"))
 # Day is 28
 
@@ -59,6 +58,11 @@ print(date_today.strftime("%Y/%m/%d"))
 # 2025/08/28
 ```
 
+- The `date()` class takes a year, month, and day as arguments
+- A `date` object has accessors like `.year`, and also methods like `.weekday()`
+- `date` objects can be compared like numbers, using `min()`, `max()`, and `sort()`
+- You can subtract one `date` from another to get a `timedelta`
+- To turn `date` objects into strings, use the `.isoformat()` or `.strftime()` methods
 
 ## DateTime
 
@@ -66,35 +70,32 @@ print(date_today.strftime("%Y/%m/%d"))
 from datetime import datetime
 
 dt = datetime(2025, 8, 28, 15, 30, 30, 100000)
+dt_2 = datetime(year=2025, month=8, day=28, hour=15, minute=30, second=30, microsecond=100000)
 # 2025-08-28 15:30:30.100000
 
-dt_details = datetime(year=2025, month=8, day=28, hour=15, minute=30, second=30, microsecond=100000)
 
 dt_hr = dt.replace(minute=0, second=0, microsecond=0)
 # 2025-08-28 15:00:00
 
 dt_hr_min = dt.replace(second=0, microsecond=0)
-print(dt_hr_min)
 # 2025-08-28 15:30:00
 ```
 
-```py title="print"
+```py title="format datetime"
 from datetime import datetime
 
 dt = datetime(2025, 8, 28, 15, 30, 30, 100000)
 
-print(dt.isoformat())
+print(dt.isoformat()) # ISO 8601 format
 # 2025-08-28T15:30:30.100000
 
-
-print(dt.strftime("%Y-%m-%d %H:%M:%S"))
-# 2025-08-28 15:30:30
-
+print(dt.strftime("%Y-%m-%d"))
+# 2025-08-28
 print(dt.strftime("%H:%M:%S on %Y/%m/%d"))
 # 15:30:30 on 2025/08/28
 ```
 
-```py title="parse"
+```py title="string parsed to datetime"
 from datetime import datetime
 
 dt = datetime.strptime("2025-08-28 15:30:30.100000", "%Y-%m-%d %H:%M:%S.%f")
@@ -125,13 +126,19 @@ print(duration.total_seconds())
 ```py title="duration2"
 from datetime import datetime, timedelta
 
-one_day = timedelta(days=1)
-tomorrow_datetime = datetime.now() + one_day
-yesterday_datetime = datetime.now() - one_day
+one_day_delta = timedelta(days=1)
+tomorrow_datetime = datetime.now() + one_day_delta
+yesterday_datetime = datetime.now() - one_day_delta
 
-one_week = timedelta(weeks=1)
-next_week_datetime = datetime.now() + one_week
+one_week_delta = timedelta(weeks=1)
+next_week_datetime = datetime.now() + one_week_delta
 ```
+
+- The `datetime()` class takes all the arguments of `date()`, plus an hour, minute, second, and microsecond
+- All of the additional arguments are optional; otherwise, they're set to zero by default
+- You can replace any value in a `datetime` with the `.replace()` method
+- Convert a `timedelta` into an integer with its `.total_seconds()` method
+- Turn strings into dates with `.strptime()` and dates into strings with `.strftime()`
 
 ## Timezone
 
@@ -141,17 +148,16 @@ from datetime import datetime, timedelta, timezone
 # US Eastern Standard Timezone
 us_eastern_tz = timezone(timedelta(hours=-5))
 
-# US Eastern Standard Time
+# timezone aware datetime
 us_eastern_time = datetime(2025, 8, 28, 15, 30, 30, tzinfo=us_eastern_tz)
 # 2025-08-28 15:30:30-05:00
 
 # India Standard Timezone
 india_tz = timezone(timedelta(hours=5, minutes=30))
 
-# India Standard Time
+# convert to India Standard Time
 india_time = us_eastern_time.astimezone(india_tz)
-print(india_time)
-# 2025-08-29 01:00:30+05:30
+# 2025-08-29 02:00:30+05:30
 ```
 
 ```py title="tzinfo"
@@ -159,14 +165,14 @@ from datetime import datetime, timedelta, timezone
 
 # US Eastern Standard Timezone
 us_eastern_tz = timezone(timedelta(hours=-5))
-
-# US Eastern Standard Time
 us_eastern_time = datetime(2025, 8, 28, 15, 30, 30, tzinfo=us_eastern_tz)
 # 2025-08-28 15:30:30-05:00
 
+# change timezone to UTC
 us_eastern_time.replace(tzinfo=timezone.utc)
 # 2025-08-28 15:30:30+00:00
 
+# adjust timezone to UTC
 us_eastern_time.astimezone(timezone.utc)
 # 2025-08-28 20:30:30+00:00
 ```
@@ -178,65 +184,119 @@ from dateutil import tz
 # Eastern time
 eastern_tz = tz.gettz('America/New_York') # Continent/City
 
-last_travel = datetime(2025, 8, 28, 15, 30, 30, tzinfo=eastern_tz)
-# 2025-08-28 15:30:30-04:00
+last_travel = datetime(2017, 12, 30, 15, 9, 3, tzinfo=eastern_tz)
+# 2017-12-30 15:09:03-05:00 <- EST
+
+first_travel = datetime(2017, 10, 1, 15, 23, 25, tzinfo=eastern_tz)
+# 2017-10-01 15:23:25-04:00 <- EDT
 ```
 
-```py title="daylight saving"
+### Daylight Saving Time
+
+```py title="starting"
 from datetime import datetime, timedelta, timezone
 
-2am = datetime(2025, 3, 9, 2, 0, 0)
-# 2025-03-09 02:00:00
-3am = datetime(2025, 3, 9, 3, 0, 0)
-# 2025-03-09 03:00:00
+spring_ahead_159am = datetime(2017, 3, 12, 1, 59, 59)
+# 2017-03-12 01:59:59
+spring_ahead_3am = datetime(2017, 3, 12, 3, 0, 0)
+# 2017-03-12 03:00:00
+(spring_ahead_3am - spring_ahead_159am).total_seconds()
+# 3601.0
 
-# US Eastern Standard Timezone
+# US Eastern Standard Timezone (EST)
 EST = timezone(timedelta(hours=-5))
-
-# Eastern Daylight Time
+# Eastern Daylight Time (EDT)
 EDT = timezone(timedelta(hours=-4))
 
-(2am.replace(tzinfo=EST) - 3am.replace(tzinfo=EDT)).seconds
-# 0
+spring_ahead_159am_est = spring_ahead_159am.replace(tzinfo=EST)
+# 2017-03-12 01:59:59-05:00
+spring_ahead_3am_edt = spring_ahead_3am.replace(tzinfo=EDT)
+# 2017-03-12 03:00:00-04:00
+
+(spring_ahead_3am_edt - spring_ahead_159am_est).total_seconds()
+# 1
 ```
 
-Confused!!!
+```py title="tz"
+from dateutil import tz
+
+eastern_tz = tz.gettz('America/New_York')
+
+spring_ahead_159am = datetime(2017, 3, 12, 1, 59, 59, tzinfo=eastern_tz)
+# 2017-03-12 01:59:59-05:00 <- EST
+
+spring_ahead_3am = datetime(2017, 3, 12, 3, 0, 0, tzinfo=eastern_tz)
+# 2017-03-12 03:00:00-04:00 <- EDT
+
+(spring_ahead_3am - spring_ahead_159am).total_seconds()
+# 1.0
+```
+
+```py title="ending"
+from dateutil import tz
+
+eastern_tz = tz.gettz('US/Eastern')
+
+first_1am = datetime(2017, 11, 5, 1, 0, 0, tzinfo=eastern_tz)
+
+tz.datetime_ambiguous(first_1am)
+# True
+
+second_1am = datetime(2017, 11, 5, 1, 0, 0, tzinfo=eastern_tz)
+second_1am_enfold = tz.enfold(second_1am)
+
+(second_1am_enfold - first_1am).total_seconds()
+# 0.0
+
+(second_1am_enfold.astimezone(tz.UTC) - first_1am.astimezone(tz.UTC)).total_seconds()
+# 3600.0
+```
+
+- A `datetime` is "timezone aware" when it has its `tzinfo` set. Otherwise it is "timezone naive"
+- Setting a timezone tells a `datetime` how to align itself to UTC, the universal time standard
+- Use the `.replace()` method to change the timezone of a `datetime`, leaving the date and time the same
+- Use the `.astimezone()` method to shift the date and time to match the new timezone
+- `dateutil.tz` provides a comprehensive, updated timezone database
 
 ## Pandas
 
 ```py title="simple example"
 import pandas as pd
 
-rides = pd.read_csv('rides.csv')
+rides = pd.read_csv('onebike.csv')
 
 rides.head(3)
-rides['started_at']
+# first 3 rows
+
+rides['started_at'] 
+# started_at column
+
 rides.iloc[2]
+# row 2 data
 ```
 
 ```py title="parse_dates"
 import pandas as pd
 
-rides = pd.read_csv('rides.csv', parse_dates=['started_at', 'ended_at'])
-
+rides = pd.read_csv('onebike.csv', parse_dates=['started_at', 'ended_at'])
 # same as
 rides['started_at'] = pd.to_datetime(rides['started_at'], format='%Y-%m-%d %H:%M:%S')
 rides['ended_at'] = pd.to_datetime(rides['ended_at'], format='%Y-%m-%d %H:%M:%S')
 
-# select started_at for row 2
+# select data from started_at column at row 2
 rides['started_at'].iloc[2]
 
 # create a duration column
 rides['duration'] = rides['ended_at'] - rides['started_at']
 
 rides['duration'].dt.total_seconds().head(3)
-# 0    60.0
-# 1    60.0
-# 2    60.0
+# 0    10.0
+# 1    20.0
+# 2    30.0
 # Name: duration, dtype: float64
 ```
 
-```py title="summarize"
+```py title="summarize datetime"
 import pandas as pd
 
 rides = pd.read_csv('rides.csv', parse_dates=['started_at', 'ended_at'])
@@ -244,19 +304,57 @@ rides['duration'] = rides['ended_at'] - rides['started_at']
 
 # average duration
 rides['duration'].mean()
-
 # total duration
 rides['duration'].sum()
 
 # count member_type
 rides['member_type'].value_counts()
-
 # member_type percentage
 rides['member_type'].value_counts() / len(rides)
+
+# add a new column with duration in seconds
+rides['duration_seconds'] = rides['duration'].dt.total_seconds()
+# group by member_type and calculate average duration
+rides.groupby('member_type')['duration_seconds'].mean()
+# resample by month and calculate average duration
+rides.resample('M', on='started_at')['duration_seconds'].mean()
+rides.resample('M', on='started_at')['duration_seconds'].mean().plot()
+rides.resample('D', on='started_at')['duration_seconds'].mean().plot()
+
+# count member_type
+rides.groupby('member_type').size()
+# first ride of each member_type
+rides.groupby('member_type').first()
 ```
 
-Confused!!!
+```py title="more on datetime"
+import pandas as pd
 
-### More on Pandas
+rides = pd.read_csv('onebike.csv', parse_dates=['started_at', 'ended_at'])
+rides['duration'] = rides['ended_at'] - rides['started_at']
 
-Confused!!!
+# min duration
+rides['duration'].dt.total_seconds().min()
+
+# year, day_name
+rides['started_at'].head(3).dt.year
+rides['started_at'].head(3).dt.day_name()
+
+# timezone aware datetime
+rides['started_at'].head(3).dt.tz_localize('America/New_York')
+# add a new column with timezone aware datetime
+rides['started_at_tz'] = rides['started_at'].dt.tz_localize('America/New_York', ambiguous='NaT')
+rides['ended_at_tz'] = rides['ended_at'].dt.tz_localize('America/New_York', ambiguous='NaT')
+
+# duration in seconds with timezone
+rides['duration_tz'] = rides['ended_at_tz'] - rides['started_at_tz']
+
+rides['duration_tz'].shift(1).head(3)
+```
+
+- When reading a csv, set the `parse_dates` argument to be the list of columns which should be parsed as datetimes
+- If setting `parse_dates` doesn't work, use the `pd.to_datetime()` function
+- Grouping rows with `.groupby()` lets you calculate aggregates per group. For example `.first()`, `.min()` or `.mean()`, `.resample()` groups rows on the basis of a datetime column, by year, month, day, and so on
+- Use `.tz_localize()` to set a timezone, keeping the date and time the same
+- Use `.tz_convert()` to change the date and time to match a new timezone
+- Use `.shift()` to shift the date and time by a given number of periods
